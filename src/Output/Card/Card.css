@@ -1,0 +1,64 @@
+.card {
+    aspect-ratio: 9 / 5;
+    width: min(90%, 900px);
+    overflow: hidden;
+    position: relative;
+    margin: 1rem auto;
+    border: none;
+    padding: 0;
+}
+
+.card > * {
+    width: 100%;
+    height: 100%;
+    box-sizing: content-box;
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: 0;
+    padding: 0;
+}
+.card .base {
+    z-index: 1;
+}
+
+.card .text {
+    z-index: 2;
+}
+
+.card .text > * {
+    position: absolute;
+    left: 72%;
+    margin-bottom: 0.2em;
+}
+
+.card .text-name {
+    top: 29%;
+}
+
+.card .text-level {
+    top: 39%;
+}
+
+.card .text-id {
+    top: 49%;
+}
+
+.card .text-goal {
+    top: 59%;
+}
+
+.card .text-comment {
+    width: 45%;
+    max-width: 45%;
+    height: 18%;
+    max-height: 18%;
+    top: 68%;
+    left: 50%;
+    padding: 0.3rem;
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+}

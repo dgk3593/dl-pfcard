@@ -1,0 +1,24 @@
+.text-settings label {
+    margin: auto 0;
+}
+
+.info input,
+.comment input {
+    padding: 0.5rem;
+}
+
+.info {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-gap: 0.5rem;
+}
+
+.comment {
+    font-family: dragalialost, sans-serif;
+    width: min(80%, 20rem);
+}
+
+.comment input {
+    width: 100%;
+    height: min(20rem, 100%);
+}

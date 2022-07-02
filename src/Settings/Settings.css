@@ -1,0 +1,90 @@
+.settings {
+    --foreground-color: #eee;
+    --border-color: #077;
+    display: flex;
+    flex-direction: column;
+}
+
+@media screen and (min-width: 960px) {
+    .settings {
+        max-height: 100vh;
+    }
+}
+
+.settings > div {
+    background-color: var(--foreground-color);
+    flex: 1;
+    border: 0.1rem solid var(--border-color);
+    border-top: none;
+}
+
+.settings .TabBar {
+    margin-top: 0.3rem;
+    display: flex;
+    position: sticky;
+    top: 0;
+    flex: 0;
+    cursor: default;
+}
+
+.settings .TabBar > div {
+    flex: 1;
+    padding: 0.5rem;
+    text-align: center;
+    border: 0.1rem solid var(--border-color);
+    border-right: none;
+    border-top: none;
+    background-color: var(--background-color, #ccc);
+}
+
+.settings .TabBar > div:not(.active):hover {
+    background-color: #fff7;
+}
+
+.settings .TabBar > div:first-child {
+    border-left: none;
+    flex: 0;
+}
+
+.settings .TabBar > div.active {
+    background: var(--foreground-color);
+    border-radius: 0.3rem 0.3rem 0 0;
+    font-weight: 600;
+    border: 0.1rem solid var(--border-color);
+    border-bottom: none;
+}
+
+.settings .TabBar > div.active + div {
+    border-left: none;
+}
+
+.settings .background-settings,
+.settings .chara-settings,
+.settings .style-settings,
+.settings .text-settings {
+    flex: 1;
+    max-width: 100%;
+    padding: 1rem 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    align-self: stretch;
+    overflow-y: scroll;
+    align-items: center;
+}
+
+.settings .searchbox {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.settings .searchbox input {
+    padding: 0.5rem;
+}
+
+.settings .searchbox button {
+    height: 100%;
+    box-shadow: unset;
+    border: 1px solid #0007;
+}

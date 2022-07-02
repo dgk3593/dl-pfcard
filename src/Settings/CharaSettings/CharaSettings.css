@@ -1,0 +1,77 @@
+.chara-current {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin: 0.5rem;
+}
+
+.chara-settings button {
+    padding: 0.3rem;
+    position: sticky;
+    top: 0.2rem;
+    border-radius: 5%;
+    border: none;
+    box-shadow: 0 0 0.1rem 0.1rem var(--border-color);
+}
+
+.chara-current img {
+    max-height: 6rem;
+}
+
+.chara-current span {
+    font-size: 1.5rem;
+}
+
+.chara-parts {
+    margin: 0.2rem auto;
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    justify-content: center;
+    gap: 0.3rem;
+}
+
+.chara-parts img {
+    max-height: 5rem;
+    box-sizing: border-box;
+    border-radius: 5%;
+}
+
+.chara-parts img:hover {
+    box-shadow: 0 0 0.1rem 0.1rem var(--border-color);
+    transform: scale(1.05);
+}
+
+.chara-parts img[data-active] {
+    box-shadow: 0 0 0.2rem 0.2rem var(--border-color);
+}
+
+.chara-select {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.5rem;
+    padding: 0.3rem;
+}
+
+.chara-choice {
+    max-width: 6rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    cursor: pointer;
+    text-align: center;
+    border-radius: 5%;
+    font-size: 0.85rem;
+}
+
+.chara-choice[data-active],
+.chara-choice[data-active]:hover {
+    box-shadow: 0 0 0.15rem 0.15rem var(--border-color);
+    transform: scale(1.05);
+}
+
+.chara-choice:hover {
+    box-shadow: 0 0 0.1rem 0.1rem var(--border-color);
+}

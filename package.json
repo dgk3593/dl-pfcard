@@ -1,0 +1,25 @@
+{
+    "name": "dl-pfcard",
+    "version": "1.0.0",
+    "author": "dgk3593",
+    "homepage": "https://dgk3593.github.io/dl-pfcard/",
+    "description": "Dragalia Lost Profile Card Maker",
+    "scripts": {
+        "dev": "vite",
+        "build": "vite build",
+        "preview": "vite preview",
+        "predeploy": "npm run build",
+        "deploy": "gh-pages -d dist"
+    },
+    "dependencies": {
+        "html2canvas": "^1.4.1",
+        "immer": "^9.0.15",
+        "preact": "^10.8.2",
+        "zustand": "^4.0.0-rc.1"
+    },
+    "devDependencies": {
+        "@preact/preset-vite": "^2.3.0",
+        "gh-pages": "^4.0.0",
+        "vite": "^2.9.13"
+    }
+}
