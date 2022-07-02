@@ -1,5 +1,5 @@
 @font-face {
-    font-family: Dragalia Lost;
+    font-family: "dragalialost";
     src: url("./dragalialost.ttf");
     font-style: normal;
     font-display: swap;
@@ -15,7 +15,7 @@ body {
     padding: 0;
     margin: 0;
     background: var(--background-color);
-    font-family: "Dragalia Lost", "Helvetica Neue", arial, sans-serif;
+    font-family: "dragalialost", "Helvetica Neue", arial, sans-serif;
     font-weight: 400;
     color: #444;
     overflow: hidden;
