@@ -75,6 +75,9 @@
     border-radius: 5%;
     font-size: 0.85rem;
 }
+.chara-choice img {
+    aspect-ratio: 1 / 1;
+}
 
 .chara-choice[data-active],
 .chara-choice[data-active]:hover {
