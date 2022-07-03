@@ -5,12 +5,6 @@
     flex-direction: column;
 }
 
-@media screen and (min-width: 960px) {
-    .settings {
-        max-height: 100vh;
-    }
-}
-
 .settings > div {
     background-color: var(--foreground-color);
     flex: 1;
@@ -87,4 +81,10 @@
     height: 100%;
     box-shadow: unset;
     border: 1px solid #0007;
+}
+
+@media screen and (min-width: 960px) {
+    .settings {
+        max-height: 100vh;
+    }
 }

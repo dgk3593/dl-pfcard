@@ -47,13 +47,15 @@ export default function CharaSettings() {
 
     return (
         <div className="chara-settings">
-            <div className="chara-current">
-                <img alt={id} src={getThumbnailPath(id)} />
-                <span>{idMap?.[id] ?? id}</span>
+            <div className="chara-info">
+                <div className="chara-current">
+                    <img alt={id} src={getThumbnailPath(id)} />
+                    <span>{idMap?.[id] ?? id}</span>
+                </div>
+                <button onClick={toggleMode}>
+                    {changeMode ? "Change Expression" : "Change Character"}
+                </button>
             </div>
-            <button onClick={toggleMode}>
-                {changeMode ? "Change Expression" : "Change Character"}
-            </button>
 
             {changeMode ? (
                 <CharaSelect onSelect={setId} />

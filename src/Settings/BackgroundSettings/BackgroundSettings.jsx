@@ -41,14 +41,16 @@ export default function BackgroundSettings() {
     return (
         <div className="background-settings">
             <Searchbox query={query} onChange={setQuery} />
-            {filteredList.map(bg => (
-                <BgPreview
-                    bg={bg}
-                    key={bg}
-                    onClick={handleClick}
-                    data-active={bg === background}
-                />
-            ))}
+            <div className="bg-previews">
+                {filteredList.map(bg => (
+                    <BgPreview
+                        bg={bg}
+                        key={bg}
+                        onClick={handleClick}
+                        data-active={bg === background}
+                    />
+                ))}
+            </div>
         </div>
     );
 }

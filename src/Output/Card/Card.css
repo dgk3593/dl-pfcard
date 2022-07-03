@@ -3,7 +3,6 @@
     width: min(90%, 900px);
     overflow: hidden;
     position: relative;
-    margin: 1rem auto;
     border: none;
     padding: 0;
 }
