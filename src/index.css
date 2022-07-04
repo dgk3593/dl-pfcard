@@ -107,6 +107,7 @@ main {
         flex-direction: row;
         flex-wrap: wrap;
         justify-content: center;
+        align-items: flex-start;
     }
 
     .settings .style-settings .style-preview {
@@ -134,5 +135,29 @@ main {
 
     .settings .background-settings .bg-preview {
         min-width: 90%;
+    }
+}
+
+@media screen and (min-width: 1280px) {
+    .settings .background-settings .bg-previews {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    .settings .background-settings .bg-preview {
+        width: 45%;
+        min-width: unset;
+    }
+
+    .settings .style-settings {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: flex-start;
+    }
+
+    .settings .style-settings .style-preview {
+        width: 45%;
+        min-width: unset;
     }
 }
