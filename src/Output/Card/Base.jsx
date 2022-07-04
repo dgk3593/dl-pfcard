@@ -57,7 +57,7 @@ async function drawChara(ctx, chara) {
     const { id, data } = chara;
     if (!data?.base?.path) return;
 
-    const { x: partX, y: partY } = data.partsOffset;
+    const { x: partX, y: partY } = data.partsOffset ?? {};
     /**
      * @param {string} partId
      */

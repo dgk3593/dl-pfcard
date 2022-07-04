@@ -44,21 +44,31 @@ export function loadImage(src) {
 export const fetchData = async id => {
     const datapath = `${SRC_URL}/${id}/index.json`;
     const data = await fetchJson(datapath);
-    data.faceCenter = {
-        x: data.offset.x + data.size.x,
-        y: data.offset.y + data.size.y,
-    };
-    data.base = {
-        path: `${SRC_URL}/${id}/${id}_base.png`,
-        offsetX: data.offset.x + data.size.x / 2 - FACE_LEFT,
-        offsetY: data.offset.y + data.size.y / 2 - FACE_TOP,
-        sizeX: PORTRAIT_SIZE + FACE_LEFT - data.offset.x - data.size.x,
-        sizeY: 500,
-    };
-    data.partsOffset = {
-        x: FACE_LEFT - data.size.x / 2,
-        y: FACE_TOP - data.size.y / 2,
-    };
+    if (data.fromWeb) {
+        data.base = {
+            path: `${SRC_URL}/${id}/${id}_base.png`,
+            offsetX: 0,
+            offsetY: 0,
+            sizeX: 900,
+            sizeY: 500,
+        };
+    } else {
+        data.faceCenter = {
+            x: data.offset.x + data.size.x,
+            y: data.offset.y + data.size.y,
+        };
+        data.base = {
+            path: `${SRC_URL}/${id}/${id}_base.png`,
+            offsetX: data.offset.x + data.size.x / 2 - FACE_LEFT,
+            offsetY: data.offset.y + data.size.y / 2 - FACE_TOP,
+            sizeX: PORTRAIT_SIZE + FACE_LEFT - data.offset.x - data.size.x,
+            sizeY: 500,
+        };
+        data.partsOffset = {
+            x: FACE_LEFT - data.size.x / 2,
+            y: FACE_TOP - data.size.y / 2,
+        };
+    }
     return data;
 };
 
