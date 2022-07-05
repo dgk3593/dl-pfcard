@@ -1,4 +1,4 @@
-export const DEFAULT_ID = "100001_01";
+export const DEFAULT_ID = "110399_01";
 export const SRC_URL = "./sprites";
 export const PORTRAIT_SIZE = 1024;
 export const CANVAS_WIDTH = 900;

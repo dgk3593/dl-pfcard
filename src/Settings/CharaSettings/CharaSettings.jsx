@@ -7,43 +7,35 @@ import { useDebounce } from "@/useDebounce";
 
 export default function CharaSettings() {
     const [changeMode, setChangeMode] = useState(true);
-    const { id, setId, face, mouth, data, setPart } = useAppState(
-        state => state.chara
-    );
-    const { faceList, mouthList } = data;
+    const chara = useAppState(state => state.chara);
+    const { id, setId, data, setPart } = chara;
 
     const toggleMode = () => setChangeMode(value => !value);
     const handleClick = ({ currentTarget }) => {
         const { value, part } = currentTarget.dataset;
         setPart(part, value);
     };
-    const faceParts =
-        faceList?.length &&
-        faceList.map(f => (
-            <img
-                key={f}
-                alt={f}
-                data-active={f === face}
-                data-value={f}
-                data-part="face"
-                src={getPartPath(id, f)}
-                onClick={handleClick}
-            />
-        ));
-
-    const mouthParts =
-        mouthList?.length &&
-        mouthList.map(m => (
-            <img
-                key={m}
-                alt={m}
-                data-active={m === mouth}
-                data-value={m}
-                data-part="mouth"
-                src={getPartPath(id, m)}
-                onClick={handleClick}
-            />
-        ));
+    const getParts = part => {
+        const list = data[`${part}List`];
+        return (
+            list?.length &&
+            list.map(p => (
+                <img
+                    key={p}
+                    alt={p}
+                    data-active={p === chara[part]}
+                    data-value={p}
+                    data-part={part}
+                    src={getPartPath(id, p)}
+                    onClick={handleClick}
+                />
+            ))
+        );
+    };
+    const faceParts = getParts("face");
+    const face2Parts = getParts("face2");
+    const mouthParts = getParts("mouth");
+    const mouth2Parts = getParts("mouth2");
 
     return (
         <div className="chara-settings">
@@ -61,8 +53,11 @@ export default function CharaSettings() {
                 <CharaSelect onSelect={setId} />
             ) : (
                 <div className="chara-parts">
+                    {!faceParts && !mouthParts && <div>No parts found</div>}
                     {faceParts}
+                    {face2Parts}
                     {mouthParts}
+                    {mouth2Parts}
                 </div>
             )}
         </div>

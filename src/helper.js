@@ -52,23 +52,44 @@ export const fetchData = async id => {
             sizeX: 900,
             sizeY: 500,
         };
-    } else {
-        data.faceCenter = {
-            x: data.offset.x + data.size.x,
-            y: data.offset.y + data.size.y,
-        };
+        return data;
+    }
+    // 2 faces
+    if (data.offset.x2) {
+        const centerX =
+            (data.offset.x + data.offset.x2) / 2 +
+            (data.size.x + data.size.x2) / 4;
+        const centerY =
+            (data.offset.y + data.offset.y2) / 2 +
+            (data.size.y + data.size.y2) / 4;
+
         data.base = {
             path: `${SRC_URL}/${id}/${id}_base.png`,
-            offsetX: data.offset.x + data.size.x / 2 - FACE_LEFT,
-            offsetY: data.offset.y + data.size.y / 2 - FACE_TOP,
-            sizeX: PORTRAIT_SIZE + FACE_LEFT - data.offset.x - data.size.x,
+            offsetX: centerX - FACE_LEFT,
+            offsetY: centerY - FACE_TOP,
+            sizeX: PORTRAIT_SIZE + FACE_LEFT - centerX,
             sizeY: 500,
         };
         data.partsOffset = {
-            x: FACE_LEFT - data.size.x / 2,
-            y: FACE_TOP - data.size.y / 2,
+            x: data.offset.x - data.base.offsetX,
+            y: data.offset.y - data.base.offsetY,
+            x2: data.offset.x2 - data.base.offsetX,
+            y2: data.offset.y2 - data.base.offsetY,
         };
+        return data;
     }
+
+    data.base = {
+        path: `${SRC_URL}/${id}/${id}_base.png`,
+        offsetX: data.offset.x + data.size.x / 2 - FACE_LEFT,
+        offsetY: data.offset.y + data.size.y / 2 - FACE_TOP,
+        sizeX: PORTRAIT_SIZE + FACE_LEFT - data.offset.x - data.size.x,
+        sizeY: 500,
+    };
+    data.partsOffset = {
+        x: FACE_LEFT - data.size.x / 2,
+        y: FACE_TOP - data.size.y / 2,
+    };
     return data;
 };
 

@@ -56,8 +56,14 @@ async function drawBackground(ctx, background) {
 async function drawChara(ctx, chara) {
     const { id, data } = chara;
     if (!data?.base?.path) return;
+    console.log(data);
 
-    const { x: partX, y: partY } = data.partsOffset ?? {};
+    const {
+        x: partX = 0,
+        y: partY = 0,
+        x2: partX2 = 0,
+        y2: partY2 = 0,
+    } = data.partsOffset ?? {};
     /**
      * @param {string} partId
      */
@@ -65,9 +71,13 @@ async function drawChara(ctx, chara) {
         const image = await loadPartImage(id, partId);
         ctx.drawImage(image, partX, partY);
     };
+    const drawPart2 = async partId => {
+        const image = await loadPartImage(id, partId);
+        ctx.drawImage(image, partX2, partY2);
+    };
 
     const { base } = data;
-    const { face, mouth } = chara;
+    const { face, mouth, face2, mouth2 } = chara;
     const baseImage = await loadImage(base.path);
     ctx.drawImage(
         baseImage,
@@ -83,6 +93,8 @@ async function drawChara(ctx, chara) {
 
     face && (await drawPart(face));
     mouth && drawPart(mouth);
+    face2 && (await drawPart2(face2));
+    mouth2 && drawPart2(mouth2);
 }
 
 /**
