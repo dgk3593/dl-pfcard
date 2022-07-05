@@ -100,7 +100,11 @@ function CharaSelect({ onSelect }) {
 
     return (
         <>
-            <Searchbox query={query} onChange={setQuery} />
+            <Searchbox
+                query={query}
+                onChange={setQuery}
+                placeholder="Search by name or id"
+            />
             <div className="chara-select">{list}</div>
         </>
     );
