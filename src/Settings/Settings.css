@@ -37,6 +37,9 @@
 
 .settings .TabBar > div:first-child {
     border-left: none;
+}
+
+.settings .TabBar > div[data-value="about"] {
     flex: 0;
 }
 
@@ -55,7 +58,8 @@
 .settings .background-settings,
 .settings .chara-settings,
 .settings .style-settings,
-.settings .text-settings {
+.settings .text-settings,
+.settings .about {
     flex: 1;
     max-width: 100%;
     padding: 1rem 0;
@@ -87,4 +91,15 @@
     .settings {
         max-height: 100vh;
     }
+}
+
+.about .link {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+}
+
+.about a {
+    text-decoration: none;
 }
