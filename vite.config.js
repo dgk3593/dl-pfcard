@@ -16,4 +16,9 @@ export default defineConfig({
     server: {
         port: 3001,
     },
+    esbuild: {
+        define: {
+            this: "window",
+        },
+    },
 });

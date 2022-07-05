@@ -10,6 +10,7 @@
     flex: 1;
     border: 0.1rem solid var(--border-color);
     border-top: none;
+    border-bottom: none;
 }
 
 .settings .TabBar {
