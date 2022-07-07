@@ -14,7 +14,7 @@
     "dependencies": {
         "html2canvas": "^1.4.1",
         "immer": "^9.0.15",
-        "preact": "^10.8.2",
+        "preact": "^10.9.0",
         "zustand": "^4.0.0-rc.1"
     },
     "devDependencies": {
