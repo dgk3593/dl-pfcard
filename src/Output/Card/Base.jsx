@@ -56,7 +56,6 @@ async function drawBackground(ctx, background) {
 async function drawChara(ctx, chara) {
     const { id, data } = chara;
     if (!data?.base?.path) return;
-    console.log(data);
 
     const {
         x: partX = 0,
