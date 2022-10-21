@@ -47,7 +47,7 @@ export default function BackgroundSettings() {
                         bg={bg}
                         key={bg}
                         onClick={handleClick}
-                        data-active={bg === background}
+                        {...(bg === background && { "data-active": true })}
                     />
                 ))}
             </div>

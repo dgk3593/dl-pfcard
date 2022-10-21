@@ -23,7 +23,7 @@ export default function CharaSettings() {
                 <img
                     key={p}
                     alt={p}
-                    data-active={p === chara[part]}
+                    {...(p === data[part] && { "data-active": true })}
                     data-value={p}
                     data-part={part}
                     src={getPartPath(id, p)}
@@ -86,7 +86,7 @@ function CharaSelect({ onSelect }) {
             className="chara-choice"
             data-id={id}
             onClick={handleClick}
-            data-active={currentId === id}
+            {...(id === currentId && { "data-active": true })}
         >
             <img alt={id} src={getThumbnailPath(id)} />
             <div>{name}</div>

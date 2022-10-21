@@ -32,7 +32,7 @@ export default function StyleSettings() {
                     style={style}
                     key={style}
                     onClick={handleClick}
-                    data-active={style === currentStyle}
+                    {...(style === currentStyle && { "data-active": true })}
                 />
             ))}
         </div>
