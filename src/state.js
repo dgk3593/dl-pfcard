@@ -1,7 +1,7 @@
-import create from "zustand";
+import { create } from "zustand";
 import { DEFAULT_ID } from "./const";
 import { fetchData } from "./helper";
-import produce from "immer";
+import { produce } from "immer";
 
 const immer = config => (set, get, api) =>
     config(fn => set(produce(fn)), get, api);
