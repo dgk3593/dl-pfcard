@@ -1,16 +1,16 @@
 import { SRC_URL, FACE_LEFT, FACE_TOP, PORTRAIT_SIZE } from "@/const";
 
 export async function fetchJson(url) {
-    try {
-        const response = await fetch(url);
-        if (response.ok) {
-            const json = await response.json();
-            return json;
-        }
-        throw new Error(await response.text());
-    } catch (e) {
-        console.error(e);
+  try {
+    const response = await fetch(url);
+    if (response.ok) {
+      const json = await response.json();
+      return json;
     }
+    throw new Error(await response.text());
+  } catch (e) {
+    console.error(e);
+  }
 }
 
 /**
@@ -18,13 +18,34 @@ export async function fetchJson(url) {
  * @return {Promise<HTMLImageElement>}
  */
 export function loadImage(src) {
-    const img = new Image();
-    img.crossOrigin = "anonymous";
-    img.src = src;
-    return new Promise((resolve, reject) => {
-        img.onload = () => resolve(img);
-        img.onerror = reject;
-    });
+  if (!globalThis.__imageCache) globalThis.__imageCache = new Map();
+  const cache = globalThis.__imageCache;
+  if (cache.has(src)) return cache.get(src);
+
+  const img = new Image();
+  img.crossOrigin = "anonymous";
+  img.src = src;
+  const p = new Promise((resolve, reject) => {
+    img.onload = async () => {
+      try {
+        if (typeof createImageBitmap === "function") {
+          const bitmap = await createImageBitmap(img);
+          cache.set(src, bitmap);
+          resolve(bitmap);
+        } else {
+          cache.set(src, img);
+          resolve(img);
+        }
+      } catch (e) {
+        // fallback to image element if createImageBitmap fails
+        cache.set(src, img);
+        resolve(img);
+      }
+    };
+    img.onerror = reject;
+  });
+  cache.set(src, p);
+  return p;
 }
 
 /**
@@ -42,55 +63,53 @@ export function loadImage(src) {
  * @return {Promise<SpriteData>}
  */
 export const fetchData = async id => {
-    const datapath = `${SRC_URL}/${id}/index.json`;
-    const data = await fetchJson(datapath);
-    if (data.fromWeb) {
-        data.base = {
-            path: `${SRC_URL}/${id}/${id}_base.png`,
-            offsetX: 0,
-            offsetY: 0,
-            sizeX: 900,
-            sizeY: 500,
-        };
-        return data;
-    }
-    // 2 faces
-    if (data.offset.x2) {
-        const centerX =
-            (data.offset.x + data.offset.x2) / 2 +
-            (data.size.x + data.size.x2) / 4;
-        const centerY =
-            (data.offset.y + data.offset.y2) / 2 +
-            (data.size.y + data.size.y2) / 4;
-
-        data.base = {
-            path: `${SRC_URL}/${id}/${id}_base.png`,
-            offsetX: centerX - FACE_LEFT,
-            offsetY: centerY - FACE_TOP,
-            sizeX: PORTRAIT_SIZE + FACE_LEFT - centerX,
-            sizeY: 500,
-        };
-        data.partsOffset = {
-            x: data.offset.x - data.base.offsetX,
-            y: data.offset.y - data.base.offsetY,
-            x2: data.offset.x2 - data.base.offsetX,
-            y2: data.offset.y2 - data.base.offsetY,
-        };
-        return data;
-    }
-
+  const datapath = `${SRC_URL}/${id}/index.json`;
+  const data = await fetchJson(datapath);
+  if (data.fromWeb) {
     data.base = {
-        path: `${SRC_URL}/${id}/${id}_base.png`,
-        offsetX: data.offset.x + data.size.x / 2 - FACE_LEFT,
-        offsetY: data.offset.y + data.size.y / 2 - FACE_TOP,
-        sizeX: PORTRAIT_SIZE + FACE_LEFT - data.offset.x - data.size.x,
-        sizeY: 500,
-    };
-    data.partsOffset = {
-        x: FACE_LEFT - data.size.x / 2,
-        y: FACE_TOP - data.size.y / 2,
+      path: `${SRC_URL}/${id}/${id}_base.png`,
+      offsetX: 0,
+      offsetY: 0,
+      sizeX: 900,
+      sizeY: 500,
     };
     return data;
+  }
+  // 2 faces
+  if (data.offset.x2) {
+    const centerX =
+      (data.offset.x + data.offset.x2) / 2 + (data.size.x + data.size.x2) / 4;
+    const centerY =
+      (data.offset.y + data.offset.y2) / 2 + (data.size.y + data.size.y2) / 4;
+
+    data.base = {
+      path: `${SRC_URL}/${id}/${id}_base.png`,
+      offsetX: centerX - FACE_LEFT,
+      offsetY: centerY - FACE_TOP,
+      sizeX: PORTRAIT_SIZE + FACE_LEFT - centerX,
+      sizeY: 500,
+    };
+    data.partsOffset = {
+      x: data.offset.x - data.base.offsetX,
+      y: data.offset.y - data.base.offsetY,
+      x2: data.offset.x2 - data.base.offsetX,
+      y2: data.offset.y2 - data.base.offsetY,
+    };
+    return data;
+  }
+
+  data.base = {
+    path: `${SRC_URL}/${id}/${id}_base.png`,
+    offsetX: data.offset.x + data.size.x / 2 - FACE_LEFT,
+    offsetY: data.offset.y + data.size.y / 2 - FACE_TOP,
+    sizeX: PORTRAIT_SIZE + FACE_LEFT - data.offset.x - data.size.x,
+    sizeY: 500,
+  };
+  data.partsOffset = {
+    x: FACE_LEFT - data.size.x / 2,
+    y: FACE_TOP - data.size.y / 2,
+  };
+  return data;
 };
 
 /**
@@ -99,7 +118,7 @@ export const fetchData = async id => {
  * @return {string}
  */
 export const getPartPath = (id, part) =>
-    `${SRC_URL}/${id}/${id}_parts_c${part}.png`;
+  `${SRC_URL}/${id}/${id}_parts_c${part}.png`;
 
 /**
  * @param {string} id
@@ -112,14 +131,14 @@ export const getThumbnailPath = id => `${SRC_URL}/${id}/${id}_thumbnail.png`;
  * @param {string} part
  */
 export const loadPartImage = async (id, part) => {
-    const imgPath = getPartPath(id, part);
-    const image = await loadImage(imgPath);
-    return image;
+  const imgPath = getPartPath(id, part);
+  const image = await loadImage(imgPath);
+  return image;
 };
 
 let idMap, charaList;
 fetchJson(`${SRC_URL}/index.json`).then(data => {
-    idMap = data;
-    charaList = Object.entries(data);
+  idMap = data;
+  charaList = Object.entries(data);
 });
 export { idMap, charaList };

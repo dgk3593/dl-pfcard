@@ -4,10 +4,10 @@
       "@/*": ["./src/*"]
     },
     "checkJs": true,
-    "target": "es2021",
-    "lib": ["es2021", "DOM", "webworker"],
+    "target": "esnext",
+    "lib": ["esnext", "DOM", "webworker"],
     "jsx": "react-jsx",
     "moduleResolution": "node",
-    "module": "es2020"
+    "module": "esnext"
   }
 }

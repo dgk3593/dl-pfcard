@@ -16,6 +16,9 @@ export default defineConfig({
   server: {
     port: 3001,
   },
+  build: {
+    target: "esnext",
+  },
   oxc: {
     define: {
       this: "window",

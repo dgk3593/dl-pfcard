@@ -5,30 +5,49 @@ import { loadImage, loadPartImage } from "@/helper";
 import { CANVAS_WIDTH, CANVAS_HEIGHT } from "@/const";
 
 export default function Base() {
-    const { background, chara, style } = useAppState();
-    /**
-     * @type {React.MutableRefObject <HTMLCanvasElement?>}
-     */
-    const canvasRef = useRef(null);
-    useEffect(() => {
-        const canvas = canvasRef.current;
-        canvas.width = CANVAS_WIDTH;
-        canvas.height = CANVAS_HEIGHT;
-    }, []);
+  const { background, chara, style } = useAppState();
+  /**
+   * @type {React.RefObject <HTMLCanvasElement?>}
+   */
+  const canvasRef = useRef(null);
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    canvas.width = CANVAS_WIDTH;
+    canvas.height = CANVAS_HEIGHT;
+  }, []);
 
-    useEffect(() => {
-        const ctx = canvasRef.current?.getContext("2d");
-        if (!ctx) return;
+  // Schedule draws on animation frames to batch rapid updates.
+  useEffect(() => {
+    const ctx = canvasRef.current?.getContext("2d");
+    if (!ctx) return;
 
-        setTimeout(async () => {
-            ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-            await drawBackground(ctx, background);
-            await drawChara(ctx, chara);
-            drawStyle(ctx, style);
-        });
-    }, [background, chara, style]);
+    let scheduled = false;
+    let rafId = 0;
 
-    return <canvas className="base" ref={el => (canvasRef.current = el)} />;
+    const doDraw = async () => {
+      scheduled = false;
+      ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+      await drawBackground(ctx, background);
+      await drawChara(ctx, chara);
+      await drawStyle(ctx, style);
+    };
+
+    const schedule = () => {
+      if (scheduled) return;
+      scheduled = true;
+      rafId = requestAnimationFrame(() => {
+        void doDraw();
+      });
+    };
+
+    schedule();
+    return () => {
+      scheduled = false;
+      cancelAnimationFrame(rafId);
+    };
+  }, [background, chara, style]);
+
+  return <canvas className="base" ref={el => (canvasRef.current = el)} />;
 }
 
 /**
@@ -36,8 +55,8 @@ export default function Base() {
  * @param {string} path
  */
 async function drawImage(ctx, path) {
-    const image = await loadImage(path);
-    ctx.drawImage(image, 0, 0);
+  const image = await loadImage(path);
+  ctx.drawImage(image, 0, 0);
 }
 
 /**
@@ -45,8 +64,8 @@ async function drawImage(ctx, path) {
  * @param {string} background
  */
 async function drawBackground(ctx, background) {
-    const path = `bg/${background}.png`;
-    await drawImage(ctx, path);
+  const path = `bg/${background}.png`;
+  await drawImage(ctx, path);
 }
 
 /**
@@ -54,46 +73,54 @@ async function drawBackground(ctx, background) {
  * @param {object} chara
  */
 async function drawChara(ctx, chara) {
-    const { id, data } = chara;
-    if (!data?.base?.path) return;
+  const { id, data } = chara;
+  if (!data?.base?.path) return;
 
-    const {
-        x: partX = 0,
-        y: partY = 0,
-        x2: partX2 = 0,
-        y2: partY2 = 0,
-    } = data.partsOffset ?? {};
-    /**
-     * @param {string} partId
-     */
-    const drawPart = async partId => {
-        const image = await loadPartImage(id, partId);
-        ctx.drawImage(image, partX, partY);
-    };
-    const drawPart2 = async partId => {
-        const image = await loadPartImage(id, partId);
-        ctx.drawImage(image, partX2, partY2);
-    };
+  const {
+    x: partX = 0,
+    y: partY = 0,
+    x2: partX2 = 0,
+    y2: partY2 = 0,
+  } = data.partsOffset ?? {};
+  // Start loading part images in parallel, then draw them in order.
 
-    const { base } = data;
-    const { face, mouth, face2, mouth2 } = chara;
-    const baseImage = await loadImage(base.path);
-    ctx.drawImage(
-        baseImage,
-        base.offsetX,
-        base.offsetY,
-        base.sizeX,
-        base.sizeY,
-        0,
-        0,
-        base.sizeX,
-        base.sizeY
-    );
+  const { base } = data;
+  const { face, mouth, face2, mouth2 } = chara;
+  const basePromise = loadImage(base.path);
+  const faceP = face ? loadPartImage(id, face) : null;
+  const mouthP = mouth ? loadPartImage(id, mouth) : null;
+  const face2P = face2 ? loadPartImage(id, face2) : null;
+  const mouth2P = mouth2 ? loadPartImage(id, mouth2) : null;
 
-    face && (await drawPart(face));
-    mouth && drawPart(mouth);
-    face2 && (await drawPart2(face2));
-    mouth2 && drawPart2(mouth2);
+  const baseImage = await basePromise;
+  ctx.drawImage(
+    baseImage,
+    base.offsetX,
+    base.offsetY,
+    base.sizeX,
+    base.sizeY,
+    0,
+    0,
+    base.sizeX,
+    base.sizeY,
+  );
+
+  if (faceP) {
+    const img = await faceP;
+    ctx.drawImage(img, partX, partY);
+  }
+  if (mouthP) {
+    const img = await mouthP;
+    ctx.drawImage(img, partX, partY);
+  }
+  if (face2P) {
+    const img = await face2P;
+    ctx.drawImage(img, partX2, partY2);
+  }
+  if (mouth2P) {
+    const img = await mouth2P;
+    ctx.drawImage(img, partX2, partY2);
+  }
 }
 
 /**
@@ -101,6 +128,6 @@ async function drawChara(ctx, chara) {
  * @param {string} style
  */
 async function drawStyle(ctx, style) {
-    const path = `style/${style}.png`;
-    drawImage(ctx, path);
+  const path = `style/${style}.png`;
+  await drawImage(ctx, path);
 }
