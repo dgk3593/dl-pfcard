@@ -4,21 +4,21 @@ import path from "path";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-    base: "/dl-pfcard/",
-    plugins: [preact()],
-    resolve: {
-        alias: {
-            "@": path.resolve(__dirname, "./src"),
-            react: "preact/compat",
-            "react-dom": "preact/compat",
-        },
+  base: "/dl-pfcard/",
+  plugins: [preact()],
+  resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "./src"),
+      react: "preact/compat",
+      "react-dom": "preact/compat",
     },
-    server: {
-        port: 3001,
+  },
+  server: {
+    port: 3001,
+  },
+  oxc: {
+    define: {
+      this: "window",
     },
-    esbuild: {
-        define: {
-            this: "window",
-        },
-    },
+  },
 });

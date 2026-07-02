@@ -1,14 +1,13 @@
 {
-    "compilerOptions": {
-        "baseUrl": ".",
-        "paths": {
-            "@/*": ["src/*"]
-        },
-        "checkJs": true,
-        "target": "es2021",
-        "lib": ["es2021", "DOM", "webworker"],
-        "jsx": "react-jsx",
-        "moduleResolution": "node",
-        "module": "es2020"
-    }
+  "compilerOptions": {
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+    "checkJs": true,
+    "target": "es2021",
+    "lib": ["es2021", "DOM", "webworker"],
+    "jsx": "react-jsx",
+    "moduleResolution": "node",
+    "module": "es2020"
+  }
 }
