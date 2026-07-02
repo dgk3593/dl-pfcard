@@ -11,7 +11,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "html2canvas": "^1.4.1",
+    "html-to-image": "^1.0.0",
     "immer": "^11.1.9",
     "preact": "^10.29.3",
     "zustand": "^5.0.14"
