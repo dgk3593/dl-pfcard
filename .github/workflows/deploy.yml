@@ -2,7 +2,7 @@ name: Build and Push to gh-pages Branch
 
 on:
   push:
-    branches: [master]
+    branches: [main]
 
 permissions:
   contents: write
